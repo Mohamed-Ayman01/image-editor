@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:root {
+  --bg-clr: #e3f2fd;
+  --blue: #5272e3;
+  --gray: #6a757c; 
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-clr);
+  font-family: "Lato", sans-serif;
+}
+
+.container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.options-and-view {
+  display: flex;
+  gap: 1rem;
+} 
+
+.options-and-view > * {
+  border-radius: 4px;
+}
+
+.options-and-view .options {
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid var(--gray);
+}
+
+.options-and-view .options h2 {
+  margin-bottom: 1rem;
+}
+
+.options-and-view .options .filter-options {
+  display: grid;
+  gap: .5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.options-and-view .options .filter-options h2 {
+  grid-column: 1/3;
+}
+
+.options-and-view .options .filter-options button {
+  padding: .5rem 1rem;
+  text-transform: capitalize;
+  background-color: white;
+  border: 1px solid var(--gray);
+  color: var(--gray);
+  font-size: 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.options-and-view .options .filter-options button:hover {
+  background-color: var(--bg-clr);
+}
+
+.options-and-view .options .filter-options button.active {
+  background-color: var(--blue);
+  color: white;
+  border-color: var(--blue);
+}
+
+.options-and-view .options .current-filter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+
+.options-and-view .options .current-filter .filter-name {
+
+}
+
+.options-and-view .options .current-filter .filter-precent {
+  text-align: end;
+}
+
+.options-and-view .options .current-filter input[type="range"] {
+  grid-column: 1/3;
+  background-color: var(--blue);
+  cursor: grab;
+}
+
+.options-and-view .options .rotation-options {
+  display: grid;
+  column-gap: .5rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.options-and-view .options .rotation-options h2 {
+  flex: 1;
+  grid-column: 1/5;
+}
+
+.options-and-view .options .rotation-options button {
+  padding: .5rem 1rem;
+  text-transform: capitalize;
+  background-color: white;
+  border: 1px solid var(--gray);
+  color: var(--gray);
+  font-size: 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.options-and-view .options .rotation-options button:hover {
+  background-color: var(--bg-clr);
+}
+
+.options-and-view .view {
+  background-color: var(--gray);
+  flex: 1;
+}
+
+.reset-and-file {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reset-and-file button {
+  padding: .5rem 1rem;
+  text-transform: capitalize;
+  background-color: white;
+  border: 1px solid var(--gray);
+  color: var(--gray);
+  font-size: 1rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: .3s;
+  
+}
+
+.reset-and-file button:hover {
+  background-color: var(--bg-clr);
+}
+
+.reset-and-file .reset {
+
+}
+
+.reset-and-file .file-options {
+
+}
+
+.reset-and-file .file-options input[type="file"] {
+  color: var(--gray);
+}
+
+.reset-and-file .file-options .save {
+  color: white;
+  background-color: var(--blue);
+}
+

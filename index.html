@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>image editor</title>
+
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>easy image editor</h1>
+    <!-- filter options - img view-->
+    <div class="options-and-view">
+      <!-- options -->
+      <div class="options">
+        <div class="filter-options">
+          <h2>filters</h2>
+          <button class="active" data-filter="1">brightness</button>
+          <button data-filter="2">saturation</button>
+          <button data-filter="3">inversion</button>
+          <button data-filter="4">grayscale</button>
+        </div>
+        <div class="current-filter">
+          <p class="fiter-name">brightness</p>
+          <p class="filter-precent">70%</p>
+          <input type="range" id="current-filter-range" min="0" max="100">
+        </div>
+        <div class="rotation-options">
+          <h2>rotate & flip</h2>
+          <button class="rotate-left"><i class="fas fa-rotate-left"></i></button>
+          <button class="rotate-right"><i class="fas fa-rotate-right"></i></button>
+          <button class="flip-horizantel"><i class="fas fa-left-right"></i></button>
+          <button class="flip-vertical"><i class="fas fa-up-down"></i></button>
+        </div>
+      </div>
+      <!-- options -->
+
+      <!-- view -->
+      <div class="view">
+        
+      </div>
+      <!-- view -->
+    </div>
+    <!-- filter options - img view-->
+
+    <!-- reset and save options -->
+    <div class="reset-and-file">
+      <button class="reset">reset filters</button>
+      <div class="file-options">
+        <input type="file" src="" alt="">
+        <button class="save">save image</button>
+      </div>
+    </div>
+    <!-- reset and save options -->
+  </div>
+</body>
+</html>
