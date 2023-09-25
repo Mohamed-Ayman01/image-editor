@@ -26,8 +26,8 @@
         </div>
         <div class="current-filter">
           <p class="fiter-name">brightness</p>
-          <p class="filter-precent">70%</p>
-          <input type="range" id="current-filter-range" min="0" max="100">
+          <p class="filter-precent">0%</p>
+          <input type="range" id="current-filter-range" min="0" max="100" value="0">
         </div>
         <div class="rotation-options">
           <h2>rotate & flip</h2>
@@ -40,9 +40,9 @@
       <!-- options -->
 
       <!-- view -->
-      <div class="view">
-        
-      </div>
+      <canvas class="view">
+
+      </canvas>
       <!-- view -->
     </div>
     <!-- filter options - img view-->
@@ -51,8 +51,9 @@
     <div class="reset-and-file">
       <button class="reset">reset filters</button>
       <div class="file-options">
-        <input type="file" src="" alt="">
-        <button class="save">save image</button>
+        <label for="img-input">select image</label>
+        <input type="file" id="img-input" accept="image/jpg, image/png, image/jpeg">
+        <a class="save" download="editedImg" href="">save image</a>
       </div>
     </div>
     <!-- reset and save options -->

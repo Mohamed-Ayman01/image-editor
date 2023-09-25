@@ -14,6 +14,10 @@
   --gray: #6a757c; 
 }
 
+a {
+  text-decoration: none;
+}
+
 body {
   height: 100vh;
   display: flex;
@@ -136,7 +140,7 @@ body {
 }
 
 .options-and-view .view {
-  background-color: var(--gray);
+  border: 1px solid var(--gray);
   flex: 1;
 }
 
@@ -145,7 +149,7 @@ body {
   justify-content: space-between;
 }
 
-.reset-and-file button {
+.reset-and-file :is(button, label, a) {
   padding: .5rem 1rem;
   text-transform: capitalize;
   background-color: white;
@@ -158,7 +162,7 @@ body {
   
 }
 
-.reset-and-file button:hover {
+.reset-and-file :is(button, label, a):hover {
   background-color: var(--bg-clr);
 }
 
@@ -167,11 +171,12 @@ body {
 }
 
 .reset-and-file .file-options {
-
+  display: flex;
+  gap: 1rem;
 }
 
 .reset-and-file .file-options input[type="file"] {
-  color: var(--gray);
+  display: none
 }
 
 .reset-and-file .file-options .save {
@@ -179,3 +184,6 @@ body {
   background-color: var(--blue);
 }
 
+#accepted-img {
+  display: none;
+}
