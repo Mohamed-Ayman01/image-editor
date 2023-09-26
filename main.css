@@ -92,17 +92,18 @@ body {
   border-color: var(--blue);
 }
 
-.options-and-view .options .current-filter {
+.options-and-view .options .current-filter .box {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: .5rem;
+  display: none;
 }
 
-.options-and-view .options .current-filter .filter-name {
-
+.options-and-view .options .current-filter .box.active {
+  display: grid;
 }
 
-.options-and-view .options .current-filter .filter-precent {
+.options-and-view .options .current-filter .precent {
   text-align: end;
 }
 
@@ -165,10 +166,10 @@ body {
 .reset-and-file :is(button, label, a):hover {
   background-color: var(--bg-clr);
 }
-
+/* 
 .reset-and-file .reset {
 
-}
+} */
 
 .reset-and-file .file-options {
   display: flex;
@@ -182,6 +183,17 @@ body {
 .reset-and-file .file-options .save {
   color: white;
   background-color: var(--blue);
+}
+
+.file-options .remove-img {
+  background-color: red;
+  color: white;
+  border-color: transparent;
+}
+
+.file-options .remove-img:hover {
+  color: var(--gray);
+  border-color: var(--gray);
 }
 
 #accepted-img {

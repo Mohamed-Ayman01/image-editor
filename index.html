@@ -19,15 +19,33 @@
       <div class="options">
         <div class="filter-options">
           <h2>filters</h2>
-          <button class="active" data-filter="1">brightness</button>
-          <button data-filter="2">saturation</button>
-          <button data-filter="3">inversion</button>
-          <button data-filter="4">grayscale</button>
+          <button class="active" data-filter="brightness">brightness</button>
+          <button data-filter="saturate">saturation</button>
+          <button data-filter="invert">inversion</button>
+          <button data-filter="grayscale">grayscale</button>
         </div>
+
         <div class="current-filter">
-          <p class="fiter-name">brightness</p>
-          <p class="filter-precent">0%</p>
-          <input type="range" id="current-filter-range" min="0" max="100" value="0">
+          <div class="box active" data-filter="brightness">
+            <p class="name">brightness</p>
+            <p class="precent">0%</p>
+            <input type="range" id="current-filter-range" min="0" max="100" value="0">
+          </div>
+          <div class="box" data-filter="saturate">
+            <p class="name">saturation</p>
+            <p class="precent">0%</p>
+            <input type="range" id="current-filter-range" min="0" max="100" value="0">
+          </div>
+          <div class="box" data-filter="invert">
+            <p class="name">inversion</p>
+            <p class="precent">0%</p>
+            <input type="range" id="current-filter-range" min="0" max="100" value="0">
+          </div>
+          <div class="box" data-filter="grayscale">
+            <p class="name">grayscale</p>
+            <p class="precent">0%</p>
+            <input type="range" id="current-filter-range" min="0" max="100" value="0">
+          </div>
         </div>
         <div class="rotation-options">
           <h2>rotate & flip</h2>
@@ -53,6 +71,7 @@
       <div class="file-options">
         <label for="img-input">select image</label>
         <input type="file" id="img-input" accept="image/jpg, image/png, image/jpeg">
+        <button class="remove-img">remove</button>
         <a class="save" download="editedImg" href="">save image</a>
       </div>
     </div>
