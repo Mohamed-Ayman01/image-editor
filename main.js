@@ -146,17 +146,29 @@ allFilterInputRange.forEach((input) => {
 
 let rotateLeftBtn = document.querySelector(".rotate-left");
 
-// ! fix here
 rotateLeftBtn.addEventListener("click", _ => {
   clearCanvas();
 
   ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.rotate(90 * Math.PI / 180);
+  ctx.rotate(-90 * Math.PI / 180);
+  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
 
   drawImg()
-
-  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
 });
+
+let rotateRighBtn = document.querySelector(".rotate-right");
+
+rotateRighBtn.addEventListener("click", _ => {
+  clearCanvas();
+
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.rotate(90 * Math.PI / 180);
+  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
+
+  drawImg()
+});
+
+// ! Reset Filters
 
 let resetFiltersBtn = document.querySelector(".reset-and-file .reset");
 
@@ -166,15 +178,21 @@ resetFiltersBtn.addEventListener("click", _ => {
   canvasData.invert = "";
   canvasData.grayscale = "";
 
+  clearCanvas();
+
+  ctx.filter = "none"
+
+  drawImg();
+
   allFilterInputRange.forEach(input => {
     let filterName = input.parentNode.getAttribute("data-filter");
 
     if (filterName == "saturate" || filterName == "brightness") {
       input.value = 100;
-      input.parentNode.querySelector(".precent").textContent = "100";
+      input.parentNode.querySelector(".precent").textContent = "100%";
     } else {
       input.value = 0;
-      input.parentNode.querySelector(".precent").textContent = "0";
+      input.parentNode.querySelector(".precent").textContent = "0%";
     }
 
   })
