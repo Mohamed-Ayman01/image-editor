@@ -2,7 +2,11 @@ let canvas = document.querySelector("canvas.view");
 let ctx = canvas.getContext("2d");
 
 let canvasData = {
-  img: "",
+  img: {
+    url: "",
+    width: 0,
+    height: 0,
+  },
   brightness: "",
   saturate: "",
   invert: "",
@@ -17,7 +21,11 @@ function clearCanvas() {
 }
 
 function clearCanvasObj() {
-  canvasData.img = "";
+  canvasData.img = {
+    url: "",
+    width: 0,
+    height: 0,
+  };
   canvasData.brightness = "";
   canvasData.saturate = "";
   canvasData.invert = "";
@@ -31,8 +39,8 @@ function drawImg() {
     document.querySelector("#accepted-img"),
     0,
     0,
-    canvas.width,
-    canvas.height,
+    canvasData.img.width,
+    canvasData.img.height,
   );
 }
 
@@ -75,7 +83,7 @@ imgInput.addEventListener("change", () => {
     document.querySelector("#accepted-img").remove();
   }
 
-  canvasData.img = URL.createObjectURL(imgInput.files[0]);
+  canvasData.img.url = URL.createObjectURL(imgInput.files[0]);
   
   let img = document.createElement("img");
   img.src = URL.createObjectURL(imgInput.files[0]);
@@ -83,7 +91,25 @@ imgInput.addEventListener("change", () => {
   
   document.body.append(img);
 
+  setTimeout(() => {
+    if (img.clientHeight >= 2000 && img.clientWidth >= 3000) {
+      canvasData.img.height = img.clientHeight / 8;
+      canvasData.img.width = img.clientWidth / 8;
+    } else if (img.clientHeight >= 1080 && img.clientWidth >= 1920) {
+      canvasData.img.height = img.clientHeight / 3;
+      canvasData.img.width = img.clientWidth / 3;
+    } else {
+      canvasData.img.height = img.clientHeight / 2;
+      canvasData.img.width = img.clientWidth / 2;
+    }
+
+    canvas.width = canvasData.img.width;
+    canvas.height = canvasData.img.height;
+  }, 1000)
+
   setTimeout(drawImg, 1000);
+
+  console.log(canvasData)
 });
 
 // ! Save Image
@@ -196,4 +222,4 @@ resetFiltersBtn.addEventListener("click", _ => {
     }
 
   })
-});
+});;
