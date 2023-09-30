@@ -20,16 +20,19 @@ function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function clearCanvasObj() {
+function clearCanvasObj(clearImg) {
+  canvasData.brightness = "";
+  canvasData.saturate = "";
+  canvasData.invert = "";
+  canvasData.grayscale = "";
+
+  if (!clearImg) return;
+
   canvasData.img = {
     url: "",
     width: 0,
     height: 0,
   };
-  canvasData.brightness = "";
-  canvasData.saturate = "";
-  canvasData.invert = "";
-  canvasData.grayscale = "";
 }
 
 function drawImg() {
@@ -92,19 +95,27 @@ imgInput.addEventListener("change", () => {
   document.body.append(img);
 
   setTimeout(() => {
-    if (img.clientHeight >= 2000 && img.clientWidth >= 3000) {
-      canvasData.img.height = img.clientHeight / 8;
-      canvasData.img.width = img.clientWidth / 8;
-    } else if (img.clientHeight >= 1080 && img.clientWidth >= 1920) {
-      canvasData.img.height = img.clientHeight / 3;
-      canvasData.img.width = img.clientWidth / 3;
+    let [w, h] = [img.clientWidth ,img.clientHeight];
+
+    if (h >= 1080 || w >= 2048) {
+      w /= 8;
+      h /= 8;
+    } else if (h >= 1080 && w >= 1920) {
+      w /= 4;
+      h /= 4;
     } else {
-      canvasData.img.height = img.clientHeight / 2;
-      canvasData.img.width = img.clientWidth / 2;
+      w /= 2;
+      h /= 2;
     }
+
+    canvasData.img.height = h;
+    canvasData.img.width = w;
 
     canvas.width = canvasData.img.width;
     canvas.height = canvasData.img.height;
+
+    console.log(img.clientHeight)
+    console.log(img.clientWidth)
   }, 1000)
 
   setTimeout(drawImg, 1000);
@@ -130,8 +141,8 @@ let removeImageBtn = document.querySelector(".remove-img");
 
 removeImageBtn.addEventListener("click", () => {
   clearCanvas();
-
-  clearCanvasObj()
+  clearCanvasObj(true);
+  resetFilterValues();
 
   document.querySelector("#accepted-img").remove();
 });
@@ -196,14 +207,8 @@ rotateRighBtn.addEventListener("click", _ => {
 
 // ! Reset Filters
 
-let resetFiltersBtn = document.querySelector(".reset-and-file .reset");
-
-resetFiltersBtn.addEventListener("click", _ => {
-  canvasData.brightness = "";
-  canvasData.saturate = "";
-  canvasData.invert = "";
-  canvasData.grayscale = "";
-
+function resetFilterValues () {
+  clearCanvasObj(false)
   clearCanvas();
 
   ctx.filter = "none"
@@ -222,4 +227,28 @@ resetFiltersBtn.addEventListener("click", _ => {
     }
 
   })
-});;
+}
+
+let resetFiltersBtn = document.querySelector(".reset-and-file .reset");
+
+resetFiltersBtn.addEventListener("click", resetFilterValues);
+
+// ! flip image (horzintal/vertical)
+
+let xAxisFlipBtn = document.querySelector("button.flip-horizental")
+let yAxisFlipBtn = document.querySelector("button.flip-vertical");
+
+xAxisFlipBtn.addEventListener("click", _ => {
+  clearCanvas()
+
+  let x = xAxisFlipBtn.getAttribute("data-scale-x");
+  let y = yAxisFlipBtn.getAttribute("data-scale-y");
+  xAxisFlipBtn.setAttribute("data-scale-x", -x)
+
+  console.log(xAxisFlipBtn.getAttribute("data-scale-x"))
+  console.log(canvasData)
+});
+
+yAxisFlipBtn.addEventListener("click", function () {
+  clearCanvas();
+});
