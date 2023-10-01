@@ -7,10 +7,12 @@ let canvasData = {
     width: 0,
     height: 0,
   },
-  brightness: "",
-  saturate: "",
-  invert: "",
-  grayscale: "",
+  filters: {
+    brightness: "",
+    saturate: "",
+    invert: "",
+    grayscale: "",
+  },
   currentFilter: document
     .querySelector(".filter-options .active")
     .getAttribute("data-filter"),
@@ -21,29 +23,46 @@ function clearCanvas() {
 }
 
 function clearCanvasObj(clearImg) {
-  canvasData.brightness = "";
-  canvasData.saturate = "";
-  canvasData.invert = "";
-  canvasData.grayscale = "";
+  // ! make a loop here excluding the img
+  for(property of Object.keys(canvasData.filters)) {
+    canvasData.filters[property] = "";
+  }
 
   if (!clearImg) return;
 
-  canvasData.img = {
-    url: "",
-    width: 0,
-    height: 0,
-  };
+  for(property of Object.keys(canvasData.img)) {
+    canvasData.img[property] = "";
+  }
 }
 
-function drawImg() {
+function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w = canvasData.img.width, h = canvasData.img.height) {
   if (!Boolean(document.querySelector("#accepted-img"))) return;
 
+  
+  let xAxisFlipBtn = document.querySelector("button.flip-horizental");
+  let yAxisFlipBtn = document.querySelector("button.flip-vertical");
+
+  // let [scaleX, scaleY] = [
+  //   xAxisFlipBtn.getAttribute("data-scale-x"),
+  //   yAxisFlipBtn.getAttribute("data-scale-y")
+  // ];
+
+  // if (scaleX < 0) 
+  //   x = -canvasData.img.width / 2;
+  // else 
+  //   x = 0;
+
+  // if (scaleY < 0) 
+  //   y = -canvasData.img.height / 2;
+  // else 
+  //   y = 0;
+
   ctx.drawImage(
-    document.querySelector("#accepted-img"),
-    0,
-    0,
-    canvasData.img.width,
-    canvasData.img.height,
+    img,
+    x,
+    y,
+    w,
+    h,
   );
 }
 
@@ -87,11 +106,11 @@ imgInput.addEventListener("change", () => {
   }
 
   canvasData.img.url = URL.createObjectURL(imgInput.files[0]);
-  
+
   let img = document.createElement("img");
   img.src = URL.createObjectURL(imgInput.files[0]);
   img.id = "accepted-img";
-  
+
   document.body.append(img);
 
   setTimeout(() => {
@@ -141,8 +160,13 @@ let removeImageBtn = document.querySelector(".remove-img");
 
 removeImageBtn.addEventListener("click", () => {
   clearCanvas();
+
   clearCanvasObj(true);
+
   resetFilterValues();
+
+  canvas.width = "";
+  canvas.height = "";
 
   document.querySelector("#accepted-img").remove();
 });
@@ -159,19 +183,24 @@ allFilterInputRange.forEach((input) => {
       .querySelector(".filter-options .active")
       .getAttribute("data-filter");
 
-    canvasData[currentFilter] = `${input.value}%`;
+    canvasData.filters[currentFilter] = `${input.value}%`;
 
-    let listOfFilters = [];
+    let unEmptyFilters = [];
 
-    for (key of Object.keys(canvasData)) {
-      if (canvasData[`${key}`] != "" && key != "img" && key != "currentFilter") {
-        listOfFilters.push(`${key}(${canvasData[key]})`)
+    for (key of Object.keys(canvasData.filters)) {
+      if (canvasData.filters[`${key}`] != "") {
+        unEmptyFilters.push(`${key}(${canvasData.filters[key]})`)
       }
     }
 
-    console.log(listOfFilters)
+    console.log(unEmptyFilters)
 
-    ctx.filter = listOfFilters.join(" ")
+    ctx.filter = unEmptyFilters.join(" ")
+
+    let xAxisFlipBtn = document.querySelector("button.flip-horizental")
+    let yAxisFlipBtn = document.querySelector("button.flip-vertical");
+
+    console.log(xAxisFlipBtn.getAttribute("data-scale-x"), yAxisFlipBtn.getAttribute("data-scale-Y"))
 
     drawImg();
 
@@ -208,7 +237,8 @@ rotateRighBtn.addEventListener("click", _ => {
 // ! Reset Filters
 
 function resetFilterValues () {
-  clearCanvasObj(false)
+  clearCanvasObj(false);
+
   clearCanvas();
 
   ctx.filter = "none"
@@ -235,20 +265,47 @@ resetFiltersBtn.addEventListener("click", resetFilterValues);
 
 // ! flip image (horzintal/vertical)
 
-let xAxisFlipBtn = document.querySelector("button.flip-horizental")
+let xAxisFlipBtn = document.querySelector("button.flip-horizental");
 let yAxisFlipBtn = document.querySelector("button.flip-vertical");
 
 xAxisFlipBtn.addEventListener("click", _ => {
-  clearCanvas()
+  clearCanvas();
 
-  let x = xAxisFlipBtn.getAttribute("data-scale-x");
-  let y = yAxisFlipBtn.getAttribute("data-scale-y");
-  xAxisFlipBtn.setAttribute("data-scale-x", -x)
+  let scaleX = xAxisFlipBtn.getAttribute("data-scale-x");
+  let scaleY = yAxisFlipBtn.getAttribute("data-scale-y");
+  scaleX = -scaleX;
+  xAxisFlipBtn.setAttribute("data-scale-x", scaleX);
 
-  console.log(xAxisFlipBtn.getAttribute("data-scale-x"))
-  console.log(canvasData)
+  ctx.save();
+
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.scale(scaleX, scaleY)
+
+  drawImg(document.querySelector("#accepted-img"),
+    -canvasData.img.width / 2,
+    -canvasData.img.height / 2,
+  );
+
+  ctx.restore();
 });
 
 yAxisFlipBtn.addEventListener("click", function () {
   clearCanvas();
+  ctx.save();
+
+  let scaleX = xAxisFlipBtn.getAttribute("data-scale-x");
+  let scaleY = yAxisFlipBtn.getAttribute("data-scale-y");
+  scaleY = -scaleY;
+  yAxisFlipBtn.setAttribute("data-scale-y", scaleY);
+
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+  ctx.scale(scaleX, scaleY)
+
+  drawImg(
+    document.querySelector("#accepted-img"),
+    -canvasData.img.width / 2,
+    -canvasData.img.height / 2,
+  );
+
+  ctx.restore();
 });
