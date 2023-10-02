@@ -38,24 +38,38 @@ function clearCanvasObj(clearImg) {
 function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w = canvasData.img.width, h = canvasData.img.height) {
   if (!Boolean(document.querySelector("#accepted-img"))) return;
 
-  
   let xAxisFlipBtn = document.querySelector("button.flip-horizental");
   let yAxisFlipBtn = document.querySelector("button.flip-vertical");
 
-  // let [scaleX, scaleY] = [
-  //   xAxisFlipBtn.getAttribute("data-scale-x"),
-  //   yAxisFlipBtn.getAttribute("data-scale-y")
-  // ];
+  let [scaleX, scaleY] = [
+    xAxisFlipBtn.getAttribute("data-scale-x"),
+    yAxisFlipBtn.getAttribute("data-scale-y")
+  ];
+  let [translateX, translateY] = [0, 0]
 
-  // if (scaleX < 0) 
-  //   x = -canvasData.img.width / 2;
-  // else 
-  //   x = 0;
+  if (scaleX == -1) {
+    x = -canvasData.img.width / 2;
+    translateX = canvasData.img.width / 2;
+  } else {
+    x = 0;
+  }
+  
+  if (scaleY == -1) {
+    y = -canvasData.img.height / 2;
+    translateY = canvasData.img.height / 2;
+  } else {
+    y = 0;
+  }
+  
+  console.log("x: "+x)
+  console.log("y: "+y)
+  console.log("#".repeat(20))
 
-  // if (scaleY < 0) 
-  //   y = -canvasData.img.height / 2;
-  // else 
-  //   y = 0;
+  ctx.save();
+
+  ctx.translate(translateX, translateY);
+
+  ctx.scale(scaleX, scaleY);
 
   ctx.drawImage(
     img,
@@ -64,6 +78,8 @@ function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w 
     w,
     h,
   );
+
+  ctx.restore()
 }
 
 // ! Toggle Current Filter
@@ -113,6 +129,7 @@ imgInput.addEventListener("change", () => {
 
   document.body.append(img);
 
+  // ! make promise here instead of set Time out like a cave man
   setTimeout(() => {
     let [w, h] = [img.clientWidth ,img.clientHeight];
 
@@ -150,7 +167,7 @@ saveBtn.addEventListener("click", (e) => {
   if (!Boolean(document.querySelector("#accepted-img")))
     return e.preventDefault();
 
-  // ! show small alert
+  // ! make it show small alert here
   saveBtn.href = canvas.toDataURL("image/jpg");
 });
 
@@ -197,6 +214,7 @@ allFilterInputRange.forEach((input) => {
 
     ctx.filter = unEmptyFilters.join(" ")
 
+    // ! =========================== FIX HERE
     let xAxisFlipBtn = document.querySelector("button.flip-horizental")
     let yAxisFlipBtn = document.querySelector("button.flip-vertical");
 
@@ -263,49 +281,36 @@ let resetFiltersBtn = document.querySelector(".reset-and-file .reset");
 
 resetFiltersBtn.addEventListener("click", resetFilterValues);
 
-// ! flip image (horzintal/vertical)
+// ! mirror image (horzintal/vertical)
 
 let xAxisFlipBtn = document.querySelector("button.flip-horizental");
 let yAxisFlipBtn = document.querySelector("button.flip-vertical");
 
-xAxisFlipBtn.addEventListener("click", _ => {
+// ! ================= FIX HERE
+xAxisFlipBtn.addEventListener("click", function () {
   clearCanvas();
-
-  let scaleX = xAxisFlipBtn.getAttribute("data-scale-x");
-  let scaleY = yAxisFlipBtn.getAttribute("data-scale-y");
+  let scaleX = this.getAttribute("data-scale-x");
   scaleX = -scaleX;
-  xAxisFlipBtn.setAttribute("data-scale-x", scaleX);
 
-  ctx.save();
-
-  ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.scale(scaleX, scaleY)
-
-  drawImg(document.querySelector("#accepted-img"),
-    -canvasData.img.width / 2,
-    -canvasData.img.height / 2,
-  );
-
-  ctx.restore();
-});
-
-yAxisFlipBtn.addEventListener("click", function () {
-  clearCanvas();
-  ctx.save();
-
-  let scaleX = xAxisFlipBtn.getAttribute("data-scale-x");
-  let scaleY = yAxisFlipBtn.getAttribute("data-scale-y");
-  scaleY = -scaleY;
-  yAxisFlipBtn.setAttribute("data-scale-y", scaleY);
-
-  ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.scale(scaleX, scaleY)
-
+  this.setAttribute("data-scale-x", scaleX);
+  
   drawImg(
     document.querySelector("#accepted-img"),
     -canvasData.img.width / 2,
     -canvasData.img.height / 2,
   );
+});
 
-  ctx.restore();
+yAxisFlipBtn.addEventListener("click", function () {
+  clearCanvas();
+  let scaleY = this.getAttribute("data-scale-y");
+  scaleY = -scaleY;
+
+  this.setAttribute("data-scale-y", scaleY);
+  
+  drawImg(
+    document.querySelector("#accepted-img"),
+    -canvasData.img.width / 2,
+    -canvasData.img.height / 2,
+  );
 });

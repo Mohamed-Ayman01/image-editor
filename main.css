@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
 
 * {
   margin: 0;
@@ -11,7 +11,7 @@
 :root {
   --bg-clr: #e3f2fd;
   --blue: #5272e3;
-  --gray: #6a757c; 
+  --gray: #6a757c;
 }
 
 a {
@@ -28,9 +28,8 @@ body {
   /* overflow: hidden; */
 }
 
-
 .container {
-  height:fit-content;
+  height: fit-content;
   width: 70%;
   display: flex;
   flex-direction: column;
@@ -53,12 +52,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-} 
+}
 
 @media (max-width: 1112px) {
   .options-and-view {
     flex-direction: column;
-  } 
+  }
 }
 
 .options-and-view > * {
@@ -79,7 +78,7 @@ body {
 
 .options-and-view .options .filter-options {
   display: grid;
-  gap: .5rem;
+  gap: 0.5rem;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 }
@@ -89,7 +88,7 @@ body {
 }
 
 .options-and-view .options .filter-options button {
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   text-transform: capitalize;
   background-color: white;
   border: 1px solid var(--gray);
@@ -97,7 +96,7 @@ body {
   font-size: 1rem;
   border-radius: 3px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .options-and-view .options .filter-options button:hover {
@@ -113,7 +112,7 @@ body {
 .options-and-view .options .current-filter .box {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: .5rem;
+  gap: 0.5rem;
   display: none;
 }
 
@@ -133,7 +132,7 @@ body {
 
 .options-and-view .options .rotation-options {
   display: grid;
-  column-gap: .5rem;
+  column-gap: 0.5rem;
   grid-template-columns: repeat(4, 1fr);
 }
 
@@ -143,7 +142,7 @@ body {
 }
 
 .options-and-view .options .rotation-options button {
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   text-transform: capitalize;
   background-color: white;
   border: 1px solid var(--gray);
@@ -151,7 +150,7 @@ body {
   font-size: 1rem;
   border-radius: 3px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .options-and-view .options .rotation-options button:hover {
@@ -171,7 +170,7 @@ body {
 }
 
 .reset-and-file :is(button, label, a) {
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   text-transform: capitalize;
   background-color: white;
   border: 1px solid var(--gray);
@@ -179,17 +178,12 @@ body {
   font-size: 1rem;
   border-radius: 3px;
   cursor: pointer;
-  transition: .3s;
-  
+  transition: 0.3s;
 }
 
 .reset-and-file :is(button, label, a):hover {
   background-color: var(--bg-clr);
 }
-/* 
-.reset-and-file .reset {
-
-} */
 
 .reset-and-file .file-options {
   display: flex;
@@ -199,7 +193,7 @@ body {
 }
 
 .reset-and-file .file-options input[type="file"] {
-  display: none
+  display: none;
 }
 
 .reset-and-file .file-options .save {
@@ -219,9 +213,8 @@ body {
 }
 
 #accepted-img {
-  /* display: none; */
   position: absolute;
   z-index: -10;
   opacity: 0;
-  transform: scale(.1, .1);
+  transform: scale(0.1, 0.1);
 }
