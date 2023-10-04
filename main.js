@@ -23,7 +23,6 @@ function clearCanvas() {
 }
 
 function clearCanvasObj(clearImg) {
-  // ! make a loop here excluding the img
   for(property of Object.keys(canvasData.filters)) {
     canvasData.filters[property] = "";
   }
@@ -47,23 +46,19 @@ function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w 
   ];
   let [translateX, translateY] = [0, 0]
 
-  if (scaleX == -1) {
+  if (+scaleX < 0) {
     x = -canvasData.img.width / 2;
     translateX = canvasData.img.width / 2;
   } else {
     x = 0;
   }
   
-  if (scaleY == -1) {
+  if (+scaleY < 0) {
     y = -canvasData.img.height / 2;
     translateY = canvasData.img.height / 2;
   } else {
     y = 0;
   }
-  
-  console.log("x: "+x)
-  console.log("y: "+y)
-  console.log("#".repeat(20))
 
   ctx.save();
 
@@ -71,13 +66,7 @@ function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w 
 
   ctx.scale(scaleX, scaleY);
 
-  ctx.drawImage(
-    img,
-    x,
-    y,
-    w,
-    h,
-  );
+  ctx.drawImage(img, x, y, w, h);
 
   ctx.restore()
 }
@@ -108,8 +97,6 @@ allFilterBtns.forEach((btn) => {
 
     btn.classList.add("active");
     canvasData.currentFilter = btn.getAttribute("data-filter");
-
-    console.log(canvasData.currentFilter);
   });
 });
 
@@ -121,43 +108,43 @@ imgInput.addEventListener("change", () => {
     document.querySelector("#accepted-img").remove();
   }
 
-  canvasData.img.url = URL.createObjectURL(imgInput.files[0]);
+  let imgURL = URL.createObjectURL(imgInput.files[0])
+
+  canvasData.img.url = imgURL;
+
+  console.log(imgInput.files[0])
 
   let img = document.createElement("img");
-  img.src = URL.createObjectURL(imgInput.files[0]);
+  img.src = imgURL;
   img.id = "accepted-img";
 
   document.body.append(img);
 
   // ! make promise here instead of set Time out like a cave man
   setTimeout(() => {
-    let [w, h] = [img.clientWidth ,img.clientHeight];
+    let [w, h] = [img.clientWidth, img.clientHeight];
+    let aspectRatio = w / h;
 
-    if (h >= 1080 || w >= 2048) {
-      w /= 8;
-      h /= 8;
-    } else if (h >= 1080 && w >= 1920) {
-      w /= 4;
-      h /= 4;
-    } else {
-      w /= 2;
-      h /= 2;
-    }
+    //* aspect ratio = w / h
 
-    canvasData.img.height = h;
+    //* h = w / aspect ratio
+
+    //* w = aspect ratio * h
+    
+    w = canvas.clientWidth;
+    h = w / (aspectRatio);
+
     canvasData.img.width = w;
+    canvasData.img.height = h;
 
-    canvas.width = canvasData.img.width;
-    canvas.height = canvasData.img.height;
-
-    console.log(img.clientHeight)
-    console.log(img.clientWidth)
+    canvas.width = w;
+    canvas.height = h;
   }, 1000)
 
   setTimeout(drawImg, 1000);
-
-  console.log(canvasData)
 });
+
+// ! adjust canvas width and height on resize
 
 // ! Save Image
 
@@ -210,15 +197,7 @@ allFilterInputRange.forEach((input) => {
       }
     }
 
-    console.log(unEmptyFilters)
-
     ctx.filter = unEmptyFilters.join(" ")
-
-    // ! =========================== FIX HERE
-    let xAxisFlipBtn = document.querySelector("button.flip-horizental")
-    let yAxisFlipBtn = document.querySelector("button.flip-vertical");
-
-    console.log(xAxisFlipBtn.getAttribute("data-scale-x"), yAxisFlipBtn.getAttribute("data-scale-Y"))
 
     drawImg();
 
@@ -236,8 +215,8 @@ rotateLeftBtn.addEventListener("click", _ => {
   ctx.translate(canvas.width / 2, canvas.height / 2);
   ctx.rotate(-90 * Math.PI / 180);
   ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
-
-  drawImg()
+  
+  drawImg();
 });
 
 let rotateRighBtn = document.querySelector(".rotate-right");
@@ -286,7 +265,6 @@ resetFiltersBtn.addEventListener("click", resetFilterValues);
 let xAxisFlipBtn = document.querySelector("button.flip-horizental");
 let yAxisFlipBtn = document.querySelector("button.flip-vertical");
 
-// ! ================= FIX HERE
 xAxisFlipBtn.addEventListener("click", function () {
   clearCanvas();
   let scaleX = this.getAttribute("data-scale-x");
@@ -297,7 +275,7 @@ xAxisFlipBtn.addEventListener("click", function () {
   drawImg(
     document.querySelector("#accepted-img"),
     -canvasData.img.width / 2,
-    -canvasData.img.height / 2,
+    -canvasData.img.height / 2
   );
 });
 
@@ -311,6 +289,6 @@ yAxisFlipBtn.addEventListener("click", function () {
   drawImg(
     document.querySelector("#accepted-img"),
     -canvasData.img.width / 2,
-    -canvasData.img.height / 2,
+    -canvasData.img.height / 2
   );
 });
