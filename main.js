@@ -6,6 +6,7 @@ let canvasData = {
     url: "",
     width: 0,
     height: 0,
+    rotation: 0,
   },
   filters: {
     brightness: "",
@@ -34,8 +35,8 @@ function clearCanvasObj(clearImg) {
   }
 }
 
-function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w = canvasData.img.width, h = canvasData.img.height) {
-  if (!Boolean(document.querySelector("#accepted-img"))) return;
+function drawImg(img = document.querySelector("#accepted-img"), x, y, w = canvasData.img.width, h = canvasData.img.height) {
+  if (!Boolean(img)) return;
 
   let xAxisFlipBtn = document.querySelector("button.flip-horizental");
   let yAxisFlipBtn = document.querySelector("button.flip-vertical");
@@ -68,7 +69,19 @@ function drawImg(img = document.querySelector("#accepted-img"), x = 0, y = 0, w 
 
   ctx.drawImage(img, x, y, w, h);
 
-  ctx.restore()
+  ctx.restore();
+}
+
+function applyFilters() {
+  let unEmptyFilters = [];
+
+  for (key of Object.keys(canvasData.filters)) {
+    if (canvasData.filters[`${key}`] != "") {
+      unEmptyFilters.push(`${key}(${canvasData.filters[key]})`)
+    }
+  }
+
+  ctx.filter = unEmptyFilters.join(" ")
 }
 
 // ! Toggle Current Filter
@@ -146,6 +159,24 @@ imgInput.addEventListener("change", () => {
 
 // ! adjust canvas width and height on resize
 
+window.addEventListener("resize", _ => {
+  let img = document.querySelector("#accepted-img");
+  if (!Boolean(img)) return;
+
+  let w = canvas.clientWidth;
+  let h = w / (img.clientWidth / img.clientHeight);
+  // ! fix problem can't resize more than initial (canvasData.img.width)
+
+  canvasData.img.width = w;
+  canvasData.img.height = h;
+
+  canvas.width = w;
+  canvas.height = h;
+  
+  applyFilters()
+  drawImg()
+});
+
 // ! Save Image
 
 let saveBtn = document.querySelector(".save");
@@ -177,9 +208,9 @@ removeImageBtn.addEventListener("click", () => {
 
 // ! Adjust filter value
 
-let allFilterInputRange = document.querySelectorAll("#current-filter-range");
+let filterInputRanges = document.querySelectorAll("#current-filter-range");
 
-allFilterInputRange.forEach((input) => {
+filterInputRanges.forEach((input) => {
   input.addEventListener("input", () => {
     clearCanvas();
 
@@ -189,15 +220,7 @@ allFilterInputRange.forEach((input) => {
 
     canvasData.filters[currentFilter] = `${input.value}%`;
 
-    let unEmptyFilters = [];
-
-    for (key of Object.keys(canvasData.filters)) {
-      if (canvasData.filters[`${key}`] != "") {
-        unEmptyFilters.push(`${key}(${canvasData.filters[key]})`)
-      }
-    }
-
-    ctx.filter = unEmptyFilters.join(" ")
+    applyFilters()
 
     drawImg();
 
@@ -242,7 +265,7 @@ function resetFilterValues () {
 
   drawImg();
 
-  allFilterInputRange.forEach(input => {
+  filterInputRanges.forEach(input => {
     let filterName = input.parentNode.getAttribute("data-filter");
 
     if (filterName == "saturate" || filterName == "brightness") {
