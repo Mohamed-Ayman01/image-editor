@@ -63,6 +63,7 @@ function drawImg(img = document.querySelector("#accepted-img"), x, y, w = canvas
 
   ctx.save();
 
+  // * scale (mirroring) canvas
   ctx.translate(translateX, translateY);
 
   ctx.scale(scaleX, scaleY);
@@ -152,6 +153,8 @@ imgInput.addEventListener("change", () => {
 
     canvas.width = w;
     canvas.height = h;
+
+    applyFilters()
   }, 1000)
 
   setTimeout(drawImg, 1000);
@@ -173,6 +176,12 @@ window.addEventListener("resize", _ => {
   canvas.width = w;
   canvas.height = h;
   
+  ctx.translate(canvas.width / 2, canvas.height / 2);
+
+  ctx.rotate(canvasData.img.rotation * Math.PI / 180);
+  
+  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
+
   applyFilters()
   drawImg()
 });
@@ -199,9 +208,6 @@ removeImageBtn.addEventListener("click", () => {
   clearCanvasObj(true);
 
   resetFilterValues();
-
-  canvas.width = "";
-  canvas.height = "";
 
   document.querySelector("#accepted-img").remove();
 });
@@ -236,22 +242,30 @@ rotateLeftBtn.addEventListener("click", _ => {
   clearCanvas();
 
   ctx.translate(canvas.width / 2, canvas.height / 2);
+
   ctx.rotate(-90 * Math.PI / 180);
+  
   ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
   
   drawImg();
+
+  canvasData.img.rotation -= 90;
 });
 
 let rotateRighBtn = document.querySelector(".rotate-right");
 
 rotateRighBtn.addEventListener("click", _ => {
   clearCanvas();
-
+  
   ctx.translate(canvas.width / 2, canvas.height / 2);
-  ctx.rotate(90 * Math.PI / 180);
-  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
 
-  drawImg()
+  ctx.rotate(90 * Math.PI / 180);
+  
+  ctx.translate(-(canvas.width / 2), -(canvas.height / 2));
+  
+  drawImg();
+
+  canvasData.img.rotation += 90;
 });
 
 // ! Reset Filters
